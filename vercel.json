@@ -1,9 +1,0 @@
-{
-  "functions": {
-    "api/**": {
-      "memory": 1024,
-      "maxDuration": 30,
-      "runtime": "nodejs22.x"
-    }
-  }
-}
