@@ -1,34 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSetting, setSetting, feeDefaults } from "@/lib/settings";
+import { feeDefaults, getSetting, setSetting, getSettings } from "@/lib/settings";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
+/**
+ * GET /api/settings
+ * Returns defaults (static) + saved (in-memory/env-backed) settings.
+ */
 export async function GET() {
+  const app = getSettings();
+
   const defaults = {
-    default_shipping_profile_id: Number(process.env.DEFAULT_SHIPPING_PROFILE_ID || 0) || undefined,
-    printify: {
-      shop_id: process.env.PRINTIFY_SHOP_ID || "",
-      provider_id: 1,
-      blueprint_id: 6,
-      variants: [{ id: 401, price: 1895, is_enabled: true }]
+    mode: "private", // private | invite | public
+    providers: {
+      printify: true,
+      printful: false,
+      gelato: false,
+      customcat: false,
     },
-    fees: feeDefaults()
+    automation: {
+      autoPublish: false,
+      autoPrice: true,
+      autoSEO: true,
+    },
+    fees: feeDefaults, // <— NOTE: object, not a function
   };
+
   const saved = {
-    default_shipping_profile_id: await getSetting("default_shipping_profile_id"),
-    printify: await getSetting("printify_defaults"),
-    fees: await getSetting("fees")
+    default_shipping_profile_id: getSetting("default_shipping_profile_id", ""),
+    etsy_section_id: getSetting("etsy_section_id", ""),
+    currency: getSetting("currency", "USD"),
+    baseUrl: app.baseUrl,
+    bucket: app.bucket,
+    isSupabaseEnabled: app.isSupabaseEnabled,
+    etsyShopId: app.etsyShopId || "",
+    printifyShopId: app.printifyShopId || "",
   };
+
   return NextResponse.json({ defaults, saved });
 }
 
-export async function PUT(req: NextRequest) {
-  const body = await req.json();
-  if (body.default_shipping_profile_id !== undefined) {
-    await setSetting("default_shipping_profile_id", body.default_shipping_profile_id);
-  }
-  if (body.printify) await setSetting("printify_defaults", body.printify);
-  if (body.fees) await setSetting("fees", body.fees);
-  return NextResponse.json({ ok: true });
-}
+/**
+ * POST /api/settings
+ * Body example:
+ * {
+ *   "saved": {
+ *     "default_shipping_profile_id": "123",
+ *     "etsy_section_id": "456",
+ *     "currency": "USD"
+ *   }
+ * }
+ */
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
 
+    if (body && typeof body.saved === "object" && body.saved !== null) {
+      for (const [key, value] of Object.entries(body.saved)) {
+        // store as string (simple in-memory fallback in lib/settings.ts)
+        setSetting(key, String(value ?? ""));
+      }
+    }
+
+    // Return the updated snapshot
+    const app = getSettings();
+    const saved = {
+      default_shipping_profile_id: getSetting("default_shipping_profile_id", ""),
+      etsy_section_id: getSetting("etsy_section_id", ""),
+      currency: getSetting("currency", "USD"),
+      baseUrl: app.baseUrl,
+      bucket: app.bucket,
+      isSupabaseEnabled: app.isSupabaseEnabled,
+      etsyShopId: app.etsyShopId || "",
+      printifyShopId: app.printifyShopId || "",
+    };
+
+    return NextResponse.json({ ok: true, saved });
+  } catch (e: any) {
+    return NextResponse.json(
+      { ok: false, error: e?.message || "Invalid request" },
+      { status: 400 }
+    );
+  }
+}
