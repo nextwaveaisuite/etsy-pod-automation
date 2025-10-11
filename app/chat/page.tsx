@@ -13,11 +13,10 @@ export default function ChatPage() {
 
   async function send() {
     if (!input.trim()) return;
-    const next = [...messages, { role: "user", content: input }];
+    const next = [...messages, { role: "user", content: input.trim() }];
     setMessages(next);
     setInput("");
     setLoading(true);
-
     try {
       const r = await fetch("/api/chat", {
         method: "POST",
@@ -25,9 +24,9 @@ export default function ChatPage() {
         body: JSON.stringify({ messages: next }),
       });
       const data = await r.json();
-      const answer = data?.reply || data?.content || JSON.stringify(data);
-      setMessages([...next, { role: "assistant", content: String(answer) }]);
-    } catch (e: any) {
+      const text = data?.reply || data?.content || "No response.";
+      setMessages([...next, { role: "assistant", content: String(text) }]);
+    } catch {
       setMessages([...next, { role: "assistant", content: "Chat error. Check OPENAI_API_KEY and /api/chat route." }]);
     } finally {
       setLoading(false);
