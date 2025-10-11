@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type MsgRole = "user" | "assistant";
+
+interface Msg {
+  role: MsgRole;
+  content: string;
+}
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Msg[]>([
@@ -13,21 +18,37 @@ export default function ChatPage() {
 
   async function send() {
     if (!input.trim()) return;
-    const next = [...messages, { role: "user", content: input.trim() }];
-    setMessages(next);
+
+    // ✅ use the correct type for messages
+    const newMessage: Msg = { role: "user", content: input.trim() };
+    const nextMessages: Msg[] = [...messages, newMessage];
+
+    setMessages(nextMessages);
     setInput("");
     setLoading(true);
+
     try {
-      const r = await fetch("/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: nextMessages }),
       });
-      const data = await r.json();
-      const text = data?.reply || data?.content || "No response.";
-      setMessages([...next, { role: "assistant", content: String(text) }]);
-    } catch {
-      setMessages([...next, { role: "assistant", content: "Chat error. Check OPENAI_API_KEY and /api/chat route." }]);
+
+      const data = await res.json();
+      const replyContent =
+        typeof data?.reply === "string"
+          ? data.reply
+          : data?.content || "No response.";
+
+      setMessages([...nextMessages, { role: "assistant", content: replyContent }]);
+    } catch (err) {
+      setMessages([
+        ...nextMessages,
+        {
+          role: "assistant",
+          content: "⚠️ Error: Unable to reach AI server. Check API route or key.",
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -39,16 +60,22 @@ export default function ChatPage() {
         <h3>Common Topics</h3>
         <ul>
           {["Product Pricing", "Niche Trends", "SEO Tips"].map((t) => (
-            <li key={t}><button className="btn-secondary" onClick={() => setInput(t)}>{t}</button></li>
+            <li key={t}>
+              <button className="btn-secondary" onClick={() => setInput(t)}>
+                {t}
+              </button>
+            </li>
           ))}
         </ul>
       </aside>
 
       <section className="chat-main card">
-        <h2 className="card-header">AI Assistant — POD & Etsy</h2>
+        <h2 className="card-header">AI Assistant — POD & Etsy Expert</h2>
         <div className="chat-thread">
           {messages.map((m, i) => (
-            <div key={i} className={`bubble ${m.role}`}>{m.content}</div>
+            <div key={i} className={`bubble ${m.role}`}>
+              {m.content}
+            </div>
           ))}
         </div>
         <div className="chat-input">
