@@ -14,26 +14,17 @@ const LINKS = [
   { href: "/analytics", label: "Analytics 📊" },
   { href: "/chat", label: "AI Chat 🤖" },
   { href: "/pricing", label: "Pricing 💎" },
-  { href: "/admin", label: "Admin ⚙️" },
-  { href: "/settings", label: "Settings" },
+  // Admin + Settings intentionally hidden from main nav.
 ];
 
 export default function Navigation() {
   const pathname = usePathname() || "/";
-
   return (
     <nav className="nav">
       {LINKS.map(({ href, label }) => {
-        const isActive =
-          pathname === href ||
-          (href !== "/" && pathname.startsWith(href + "/"));
-
+        const active = pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
         return (
-          <Link
-            key={href}
-            href={href}
-            className={`nav-link${isActive ? " active" : ""}`}
-          >
+          <Link key={href} href={href} className={`nav-link${active ? " active" : ""}`}>
             {label}
           </Link>
         );
