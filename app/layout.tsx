@@ -14,11 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <div className="app-shell">
-          {/* Top Bar */}
           <header className="topbar">
             <div className="container topbar-inner">
               <Link href="/" className="brand">
-                <Image src="/logo.png" alt="Etsy Automate Logo" width={40} height={40} className="brand-logo" />
+                <Image src="/logo.png" alt="Logo" width={40} height={40} className="brand-logo" />
                 <div>
                   <h1 className="brand-title">ETSY AUTOMATE</h1>
                   <p className="brand-subtitle">Print-on-Demand Simplified</p>
