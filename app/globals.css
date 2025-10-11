@@ -2,16 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -------------------------------
+   Theme tokens
+-------------------------------- */
 :root {
-  /* Color Theme */
-  --primary: #3b82f6;      /* Blue */
+  /* Brand */
+  --primary: #3b82f6;
   --primary-dark: #2563eb;
-  --secondary: #8b5cf6;    /* Purple */
-  --accent: #06b6d4;       /* Cyan */
-  --success: #10b981;      /* Green */
-  --warning: #f59e0b;      /* Orange */
-  --danger: #ef4444;       /* Red */
-  
+  --secondary: #8b5cf6;
+  --accent: #06b6d4;
+
+  /* Feedback */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
   /* Neutrals */
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
@@ -20,7 +25,7 @@
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -28,15 +33,15 @@
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* -------------------------------
+   Resets
+-------------------------------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -45,14 +50,15 @@ body {
   line-height: 1.6;
 }
 
-/* Typography */
+/* -------------------------------
+   Typography
+-------------------------------- */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
-
 h1 { font-size: 2.25rem; }
 h2 { font-size: 1.875rem; }
 h3 { font-size: 1.5rem; }
@@ -60,12 +66,113 @@ h4 { font-size: 1.25rem; }
 h5 { font-size: 1.125rem; }
 h6 { font-size: 1rem; }
 
-p {
-  margin-bottom: 1rem;
-  color: var(--text-secondary);
+p { margin-bottom: 1rem; color: var(--text-secondary); }
+
+/* -------------------------------
+   App Shell
+-------------------------------- */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Buttons */
+/* Container */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Header */
+.header {
+  background-color: var(--bg-primary);
+  border-bottom: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+.brand-logo { border-radius: 0.5rem; }
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0;
+}
+.brand-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+/* Main */
+.main { flex: 1; padding: 2rem 0; }
+
+/* Footer */
+.footer {
+  background-color: #1e293b;
+  color: white;
+  padding: 2rem 0;
+  margin-top: auto;
+}
+.footer-inner { text-align: center; }
+.footer-title { font-weight: 600; margin-bottom: 0.5rem; color: white; }
+.footer-subtitle { font-size: 0.875rem; color: #94a3b8; margin-bottom: 0; }
+
+/* -------------------------------
+   Navigation
+-------------------------------- */
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+  background-color: transparent;
+}
+.nav-link:hover {
+  color: var(--primary);
+  background-color: var(--bg-tertiary);
+  border-color: var(--primary);
+}
+.nav-link.active {
+  color: var(--primary);
+  background-color: var(--bg-tertiary);
+  border-color: var(--primary);
+}
+
+/* -------------------------------
+   UI Elements
+-------------------------------- */
 button, .btn {
   font-weight: 600;
   padding: 0.625rem 1.25rem;
@@ -79,27 +186,13 @@ button, .btn {
   justify-content: center;
   gap: 0.5rem;
 }
-
-button:hover, .btn:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
+button:hover, .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: white;
 }
-
-.btn-success {
-  background-color: var(--success);
-  color: white;
-}
-
-.btn-danger {
-  background-color: var(--danger);
-  color: white;
-}
-
+.btn-success { background-color: var(--success); color: white; }
+.btn-danger { background-color: var(--danger); color: white; }
 .btn-secondary {
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
@@ -115,11 +208,7 @@ button:hover, .btn:hover {
   box-shadow: var(--shadow-sm);
   transition: all 0.2s;
 }
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-}
-
+.card:hover { box-shadow: var(--shadow-md); }
 .card-header {
   font-weight: 700;
   font-size: 1.125rem;
@@ -141,13 +230,11 @@ input, textarea, select {
   color: var(--text-primary);
   font-weight: 500;
 }
-
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -156,29 +243,21 @@ label {
   font-size: 0.9375rem;
 }
 
-/* Container */
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-/* Responsive */
+/* -------------------------------
+   Responsive
+-------------------------------- */
 @media (max-width: 768px) {
   h1 { font-size: 1.875rem; }
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.25rem; }
-  
-  .container {
-    padding: 0 1rem;
-  }
-  
-  .card {
-    padding: 1rem;
-  }
+
+  .container { padding: 0 1rem; }
+  .card { padding: 1rem; }
 }
 
-/* Utility Classes */
+/* -------------------------------
+   Utilities
+-------------------------------- */
 .text-bold { font-weight: 700; }
 .text-semibold { font-weight: 600; }
 .text-center { text-align: center; }
