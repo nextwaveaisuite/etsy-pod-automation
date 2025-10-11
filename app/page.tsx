@@ -2,21 +2,14 @@
 
 import { useState } from "react";
 
-export default function Dashboard() {
-  const [toggles, setToggles] = useState({
-    upload: true,
-    renew: true,
-    adjust: false,
-  });
-
+export default function Home() {
+  const [toggles, setToggles] = useState({ upload: true, renew: true, adjust: false });
   const Toggle = ({ id, label }: { id: keyof typeof toggles; label: string }) => (
     <div className="row between">
       <span>{label}</span>
       <button
         className={`switch ${toggles[id] ? "on" : ""}`}
         onClick={() => setToggles((t) => ({ ...t, [id]: !t[id] }))}
-        aria-pressed={toggles[id]}
-        aria-label={label}
       >
         <span className="knob" />
       </button>
@@ -25,26 +18,15 @@ export default function Dashboard() {
 
   return (
     <div className="grid-dashboard">
-      {/* Overview */}
       <section className="card">
         <h2 className="card-header">Overview</h2>
         <div className="stats">
-          <div className="stat">
-            <div className="stat-label">Listings</div>
-            <div className="stat-value highlight">3,450</div>
-          </div>
-          <div className="stat">
-            <div className="stat-label">Stores</div>
-            <div className="stat-value">12</div>
-          </div>
-          <div className="stat">
-            <div className="stat-label">Status</div>
-            <div className="stat-value">Active</div>
-          </div>
+          <div className="stat"><div className="stat-label">Listings</div><div className="stat-value highlight">3,450</div></div>
+          <div className="stat"><div className="stat-label">Stores</div><div className="stat-value">12</div></div>
+          <div className="stat"><div className="stat-label">Status</div><div className="stat-value">Active</div></div>
         </div>
       </section>
 
-      {/* Automation */}
       <section className="card">
         <h2 className="card-header">Automation</h2>
         <div className="list">
@@ -54,7 +36,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Recent Activity */}
       <section className="card">
         <h2 className="card-header">Recent Activity</h2>
         <ul className="table">
@@ -65,7 +46,6 @@ export default function Dashboard() {
         </ul>
       </section>
 
-      {/* Top Products */}
       <section className="card">
         <h2 className="card-header row between"><span>Top Products</span><span className="muted">Sales</span></h2>
         <ul className="table">
