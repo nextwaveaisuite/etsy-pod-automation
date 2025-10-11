@@ -1,53 +1,43 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useState } from 'react'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const LINKS = [
+  { href: "/", label: "Basic" },
+  { href: "/dashboard", label: "Auto" },
+  { href: "/smart", label: "Smart 🧠" },
+  { href: "/library", label: "Library 🖼️" },
+  { href: "/editor", label: "Editor ✏️" },
+  { href: "/planners", label: "Planners 📋" },
+  { href: "/opportunities", label: "Opportunities 🍎" },
+  { href: "/analytics", label: "Analytics 📊" },
+  { href: "/chat", label: "AI Chat 🤖" },
+  { href: "/pricing", label: "Pricing 💎" },
+  { href: "/admin", label: "Admin ⚙️" },
+  { href: "/settings", label: "Settings" },
+];
 
 export default function Navigation() {
-  return (
-    <nav style={{
-      display: 'flex',
-      gap: '0.5rem',
-      flexWrap: 'wrap',
-      alignItems: 'center'
-    }}>
-      <NavLink href="/" label="Basic" />
-      <NavLink href="/dashboard" label="Auto" />
-      <NavLink href="/smart" label="Smart 🧠" />
-      <NavLink href="/library" label="Library 🖼️" />
-      <NavLink href="/editor" label="Editor ✏️" />
-      <NavLink href="/planners" label="Planners 📋" />
-      <NavLink href="/opportunities" label="Opportunities 🍎" />
-      <NavLink href="/analytics" label="Analytics 📊" />
-      <NavLink href="/chat" label="AI Chat 🤖" />
-      <NavLink href="/pricing" label="Pricing 💎" />
-      <NavLink href="/admin" label="Admin ⚙️" />
-      <NavLink href="/settings" label="Settings" />
-    </nav>
-  )
-}
+  const pathname = usePathname() || "/";
 
-function NavLink({ href, label }: { href: string; label: string }) {
-  const [isHovered, setIsHovered] = useState(false)
-  
   return (
-    <Link 
-      href={href}
-      style={{
-        padding: '0.5rem 1rem',
-        borderRadius: '0.5rem',
-        fontWeight: '700',
-        fontSize: '0.9375rem',
-        color: isHovered ? '#3b82f6' : '#1e293b',
-        textDecoration: 'none',
-        transition: 'all 0.2s',
-        border: `2px solid ${isHovered ? '#3b82f6' : 'transparent'}`,
-        backgroundColor: isHovered ? '#f1f5f9' : 'transparent'
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {label}
-    </Link>
-  )
+    <nav className="nav">
+      {LINKS.map(({ href, label }) => {
+        const isActive =
+          pathname === href ||
+          (href !== "/" && pathname.startsWith(href + "/"));
+
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`nav-link${isActive ? " active" : ""}`}
+          >
+            {label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
 }
