@@ -1,60 +1,214 @@
-"use client";
+'use client'
 
-import { useState } from "react";
+import { useState } from 'react'
 
-export default function Home() {
-  const [toggles, setToggles] = useState({ upload: true, renew: true, adjust: false });
-  const Toggle = ({ id, label }: { id: keyof typeof toggles; label: string }) => (
-    <div className="row between">
-      <span>{label}</span>
-      <button
-        className={`switch ${toggles[id] ? "on" : ""}`}
-        onClick={() => setToggles((t) => ({ ...t, [id]: !t[id] }))}
-      >
-        <span className="knob" />
-      </button>
-    </div>
-  );
+export default function BasicDashboard() {
+  const [niche, setNiche] = useState('wildflower line art')
+  const [product, setProduct] = useState('tote bag')
+  const [mockupUrls, setMockupUrls] = useState('')
+  const [activity, setActivity] = useState<string[]>([])
+  const [seo, setSeo] = useState('')
+  const [profit, setProfit] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const generateMockup = async () => {
+    setActivity(prev => [...prev, '🎨 Generating mockup...'])
+    // Add your mockup generation logic here
+  }
+
+  const launch = async () => {
+    setLoading(true)
+    setActivity(prev => [...prev, '🚀 Launching one-button flow...'])
+    
+    try {
+      // Calculate profit
+      const calcResponse = await fetch('/api/calc/etsy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          itemPrice: 24.95,
+          costOfGoods: 13.00
+        })
+      })
+      
+      const calcData = await calcResponse.json()
+      if (calcData.success) {
+        setProfit(`${calcData.profit.toFixed(2)} AUD`)
+        setActivity(prev => [...prev, '✅ Calc done'])
+      }
+
+      // Generate SEO
+      const seoResponse = await fetch('/api/seo/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          niche: niche,
+          product: product
+        })
+      })
+      
+      const seoData = await seoResponse.json()
+      if (seoData.success && seoData.titles) {
+        setSeo(seoData.titles.join(' — '))
+        setActivity(prev => [...prev, '✅ SEO generated'])
+      }
+    } catch (error) {
+      console.error('Launch error:', error)
+      setActivity(prev => [...prev, '❌ Error occurred'])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <div className="grid-dashboard">
-      <section className="card">
-        <h2 className="card-header">Overview</h2>
-        <div className="stats">
-          <div className="stat"><div className="stat-label">Listings</div><div className="stat-value highlight">3,450</div></div>
-          <div className="stat"><div className="stat-label">Stores</div><div className="stat-value">12</div></div>
-          <div className="stat"><div className="stat-label">Status</div><div className="stat-value">Active</div></div>
+    <div>
+      <h1 style={{ marginBottom: '0.5rem' }}>📦 Basic Dashboard</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontWeight: '600' }}>
+        Manual controls for product creation and listing
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        {/* Left Column - Inputs */}
+        <div>
+          <div className="card">
+            <h3 className="card-header">⚙️ Inputs</h3>
+            
+            <div className="form-group">
+              <label>Niche</label>
+              <input
+                type="text"
+                value={niche}
+                onChange={(e) => setNiche(e.target.value)}
+                placeholder="e.g., wildflower line art"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Product</label>
+              <input
+                type="text"
+                value={product}
+                onChange={(e) => setProduct(e.target.value)}
+                placeholder="e.g., tote bag"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Mockup Image URLs (one per line)</label>
+              <textarea
+                value={mockupUrls}
+                onChange={(e) => setMockupUrls(e.target.value)}
+                rows={4}
+                placeholder="https://example.com/image1.jpg"
+                style={{ resize: 'vertical' }}
+              />
+            </div>
+
+            <button
+              onClick={generateMockup}
+              className="btn-success"
+              style={{ width: '100%' }}
+            >
+              🎨 Generate Mockup
+            </button>
+
+            <div style={{ 
+              marginTop: '1.5rem', 
+              padding: '1rem', 
+              backgroundColor: 'var(--bg-tertiary )', 
+              borderRadius: '0.5rem',
+              border: '2px solid var(--border)'
+            }}>
+              <strong style={{ fontWeight: '800' }}>Taxonomy ID:</strong> 1100
+            </div>
+          </div>
         </div>
-      </section>
 
-      <section className="card">
-        <h2 className="card-header">Automation</h2>
-        <div className="list">
-          <Toggle id="upload" label="Auto Upload" />
-          <Toggle id="renew" label="Auto Renew" />
-          <Toggle id="adjust" label="Auto Adjust" />
+        {/* Right Column - Actions & Results */}
+        <div>
+          <div className="card">
+            <h3 className="card-header">🚀 One-Button Launcher</h3>
+            
+            <button
+              onClick={launch}
+              disabled={loading}
+              className="btn-primary"
+              style={{ width: '100%', fontSize: '1.25rem', padding: '1.25rem' }}
+            >
+              {loading ? '⏳ Processing...' : '🚀 Launch'}
+            </button>
+
+            {seo && (
+              <div style={{ marginTop: '1.5rem' }}>
+                <strong style={{ fontWeight: '800', display: 'block', marginBottom: '0.75rem' }}>
+                  📝 SEO:
+                </strong>
+                <p style={{ 
+                  padding: '1rem', 
+                  backgroundColor: '#eff6ff', 
+                  borderRadius: '0.5rem',
+                  border: '2px solid #3b82f6',
+                  fontWeight: '600',
+                  color: '#1e40af'
+                }}>
+                  {seo}
+                </p>
+              </div>
+            )}
+
+            {profit && (
+              <div style={{ marginTop: '1.5rem' }}>
+                <strong style={{ fontWeight: '800', display: 'block', marginBottom: '0.75rem' }}>
+                  💰 Profit:
+                </strong>
+                <p style={{ 
+                  padding: '1rem', 
+                  backgroundColor: '#f0fdf4', 
+                  borderRadius: '0.5rem',
+                  border: '2px solid #10b981',
+                  fontWeight: '800',
+                  fontSize: '1.5rem',
+                  color: '#166534',
+                  textAlign: 'center'
+                }}>
+                  ${profit}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="card">
+            <h3 className="card-header">📊 Activity Log</h3>
+            <div style={{ 
+              maxHeight: '300px', 
+              overflowY: 'auto',
+              backgroundColor: 'var(--bg-tertiary)',
+              padding: '1rem',
+              borderRadius: '0.5rem',
+              border: '2px solid var(--border)'
+            }}>
+              {activity.length === 0 ? (
+                <p style={{ color: 'var(--text-muted)', fontWeight: '600', textAlign: 'center' }}>
+                  No activity yet
+                </p>
+              ) : (
+                activity.map((item, index) => (
+                  <div key={index} style={{ 
+                    padding: '0.75rem', 
+                    marginBottom: '0.5rem',
+                    backgroundColor: 'white',
+                    borderRadius: '0.375rem',
+                    border: '2px solid var(--border)',
+                    fontWeight: '600'
+                  }}>
+                    {item}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
         </div>
-      </section>
-
-      <section className="card">
-        <h2 className="card-header">Recent Activity</h2>
-        <ul className="table">
-          <li><span>Listing uploaded</span><span className="muted">2 hours ago</span></li>
-          <li><span>Pricing updated</span><span className="muted">20 hours ago</span></li>
-          <li><span>Renewal skipped</span><span className="muted">1 day ago</span></li>
-          <li><span>Tags adjusted</span><span className="muted">1 day ago</span></li>
-        </ul>
-      </section>
-
-      <section className="card">
-        <h2 className="card-header row between"><span>Top Products</span><span className="muted">Sales</span></h2>
-        <ul className="table">
-          <li><span>Product A</span><span>150</span></li>
-          <li><span>Product B</span><span>120</span></li>
-          <li><span>Product C</span><span>110</span></li>
-          <li><span>Product D</span><span>105</span></li>
-        </ul>
-      </section>
+      </div>
     </div>
-  );
+  )
 }
