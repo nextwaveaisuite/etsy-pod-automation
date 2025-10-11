@@ -9,44 +9,29 @@ export const metadata: Metadata = {
   description: "Professional Print-on-Demand automation platform for Etsy sellers",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <div className="app-shell">
-          {/* Header */}
-          <header className="header">
-            <div className="container header-inner">
-              {/* Logo / Brand */}
+          {/* Top Bar */}
+          <header className="topbar">
+            <div className="container topbar-inner">
               <Link href="/" className="brand">
-                <Image
-                  src="/logo.png"
-                  alt="Etsy Automate Logo"
-                  width={48}
-                  height={48}
-                  className="brand-logo"
-                />
+                <Image src="/logo.png" alt="Etsy Automate Logo" width={40} height={40} className="brand-logo" />
                 <div>
                   <h1 className="brand-title">ETSY AUTOMATE</h1>
                   <p className="brand-subtitle">Print-on-Demand Simplified</p>
                 </div>
               </Link>
-
-              {/* Navigation */}
               <Navigation />
             </div>
           </header>
 
-          {/* Main */}
           <main className="main">
             <div className="container">{children}</div>
           </main>
 
-          {/* Footer */}
           <footer className="footer">
             <div className="container footer-inner">
               <p className="footer-title">© 2025 Etsy Automate. All rights reserved.</p>
