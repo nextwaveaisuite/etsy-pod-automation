@@ -1,10 +1,9 @@
 // lib/images.ts
 import fs from "fs";
 import path from "path";
-import mime from "mime-types";
 import { createClient } from "@supabase/supabase-js";
 
-// ---------- CONFIG ----------
+// --- CONFIG ---
 export const IMAGE_ROOT = path.join(process.cwd(), "public", "uploads");
 
 export const supabase = createClient(
@@ -12,7 +11,7 @@ export const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnZ3Nmd3JqbHRwZnljYWJ6cHB1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwNTU3MTMsImV4cCI6MjA3NTYzMTcxM30.-0R7bYbejkYwKj-w_tzkEZaDaUOTzEAHffK6HgBz8Cc"
 );
 
-// ---------- HELPERS ----------
+// --- BASIC UTILS ---
 export function ensureImageRoot() {
   if (!fs.existsSync(IMAGE_ROOT)) fs.mkdirSync(IMAGE_ROOT, { recursive: true });
 }
@@ -26,7 +25,22 @@ export function isZipFilename(filename: string) {
 }
 
 export function contentTypeByExt(filePath: string) {
-  return mime.lookup(filePath) || "application/octet-stream";
+  const ext = path.extname(filePath).toLowerCase();
+  switch (ext) {
+    case ".jpg":
+    case ".jpeg":
+      return "image/jpeg";
+    case ".png":
+      return "image/png";
+    case ".gif":
+      return "image/gif";
+    case ".webp":
+      return "image/webp";
+    case ".zip":
+      return "application/zip";
+    default:
+      return "application/octet-stream";
+  }
 }
 
 export function readRelPath(relPath: string) {
@@ -51,11 +65,14 @@ export async function saveBlobTo(file: Buffer, fileName: string) {
   return dest;
 }
 
-// ---------- SUPABASE STORAGE ----------
+// --- SUPABASE STORAGE HELPERS ---
 export async function uploadImage(file: Buffer, fileName: string) {
   const { data, error } = await supabase.storage
     .from("images")
-    .upload(fileName, file, { upsert: true, contentType: contentTypeByExt(fileName) });
+    .upload(fileName, file, {
+      upsert: true,
+      contentType: contentTypeByExt(fileName),
+    });
   if (error) throw error;
   return data.path;
 }
