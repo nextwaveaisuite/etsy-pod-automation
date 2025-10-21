@@ -1,35 +1,22 @@
-import Link from "next/link";
-import { ReactNode } from "react";
-import { headers } from "next/headers";
+import '../globals.css'
+import Sidebar from './components/Sidebar'
+import Header from './components/Header'
 
-function isActive(path: string) {
-  const h = headers();
-  const url = h.get("x-url") || "";
-  return url.includes(path);
+export const metadata = {
+  title: 'Etsy Automate Admin Console',
+  description: 'Admin management for Etsy POD Automation Platform',
 }
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <div className="admin-shell">
-          <aside className="admin-aside">
-            <div className="admin-brand">NEXTWAVE — ADMIN</div>
-            <nav className="admin-nav">
-              <Link className={`admin-link ${isActive("/admin") ? "active" : ""}`} href="/admin">Overview</Link>
-              <Link className="admin-link" href="/admin/users">Users</Link>
-              <Link className="admin-link" href="/admin/plans">Plans</Link>
-              <Link className="admin-link" href="/admin/revenue">Revenue</Link>
-              <Link className="admin-link" href="/admin/logs">Logs</Link>
-              <Link className="admin-link" href="/admin/settings">Settings</Link>
-              <form action="/api/admin/logout" method="post" style={{ marginTop: 10 }}>
-                <button className="admin-link" style={{ width: "100%", textAlign: "left" }} type="submit">Logout</button>
-              </form>
-            </nav>
-          </aside>
-          <main className="admin-main">{children}</main>
-        </div>
+      <body className="flex h-screen bg-[#0b1120] text-white">
+        <Sidebar />
+        <main className="flex-1 flex flex-col">
+          <Header />
+          <div className="flex-1 overflow-y-auto p-6">{children}</div>
+        </main>
       </body>
     </html>
-  );
+  )
 }
