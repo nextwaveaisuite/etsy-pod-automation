@@ -1,303 +1,266 @@
 'use client';
 import React from 'react';
 
-export default function PlannersPage() {
-  const [templates, setTemplates] = React.useState<any[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = React.useState<any>(null);
+export default function PricingPage() {
+  const [tiers, setTiers] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [generating, setGenerating] = React.useState(false);
-  const [generatedPlanner, setGeneratedPlanner] = React.useState<any>(null);
-  const [customization, setCustomization] = React.useState({
-    colors: ['#000000', '#FFFFFF'],
-    title: '',
-    style: 'minimalist' as 'minimalist' | 'colorful' | 'professional' | 'cute'
-  });
-  const [filterCategory, setFilterCategory] = React.useState('all');
 
   React.useEffect(() => {
-    loadTemplates();
+    loadTiers();
   }, []);
 
-  async function loadTemplates() {
+  async function loadTiers() {
     try {
-      const res = await fetch('/api/planners/templates?limit=50');
+      const res = await fetch('/api/subscription/tiers');
       const data = await res.json();
-      setTemplates(data.templates || []);
+      // Filter out owner tier from public display
+      const publicTiers = Object.values(data.tiers).filter((t: any) => t.id !== 'owner');
+      setTiers(publicTiers);
     } catch (err) {
-      console.error('Failed to load templates:', err);
+      console.error('Failed to load tiers:', err);
     } finally {
       setLoading(false);
     }
   }
 
-  async function generatePlanner() {
-    if (!selectedTemplate) return;
-    
-    setGenerating(true);
-    setGeneratedPlanner(null);
-    
-    try {
-      const res = await fetch('/api/planners/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          templateId: selectedTemplate.id,
-          customization: {
-            ...customization,
-            title: customization.title || selectedTemplate.name
-          }
-        })
-      });
-      
-      const data = await res.json();
-      
-      if (data.success) {
-        setGeneratedPlanner(data);
-      } else {
-        alert('Failed to generate planner: ' + data.error);
-      }
-    } catch (err: any) {
-      alert('Error: ' + err.message);
-    } finally {
-      setGenerating(false);
-    }
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-8 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600"></div>
+      </div>
+    );
   }
 
-  const categories = ['all', ...new Set(templates.map(t => t.category))];
-  const filteredTemplates = filterCategory === 'all' 
-    ? templates 
-    : templates.filter(t => t.category === filterCategory);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-900 mb-2">
-            📋 Productivity Planners Generator
+        <header className="text-center mb-12">
+          <h1 className="text-6xl font-bold text-gray-900 mb-4">
+            Choose Your Plan
           </h1>
-          <p className="text-xl text-gray-600">
-            Create beautiful, print-ready planners, trackers, and organizers for your POD store
+          <p className="text-2xl text-gray-600 mb-2">
+            Start free, upgrade as you grow
           </p>
-          <div className="mt-4 p-4 bg-green-100 border-l-4 border-green-500 rounded">
-            <p className="text-sm text-green-900">
-              <strong>15 ready-to-use templates!</strong> Daily planners, to-do lists, habit trackers, meal planners, and more. 
-              All lightweight, easy to customize, and perfect for Etsy POD.
-            </p>
-          </div>
+          <p className="text-lg text-gray-500">
+            All plans include core features. Unlock advanced automation as you scale.
+          </p>
         </header>
 
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading templates...</p>
-          </div>
-        ) : (
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Template Browser */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold">Browse Templates ({filteredTemplates.length})</h2>
-                  <select
-                    value={filterCategory}
-                    onChange={e => setFilterCategory(e.target.value)}
-                    className="border-2 border-gray-300 rounded-lg px-4 py-2"
-                  >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>
-                        {cat === 'all' ? 'All Categories' : cat}
-                      </option>
-                    ))}
-                  </select>
+        {/* Pricing Cards */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {tiers.map((tier: any) => (
+            <div
+              key={tier.id}
+              className={`bg-white rounded-2xl shadow-xl overflow-hidden transition-all hover:scale-105 ${
+                tier.id === 'pro' ? 'ring-4 ring-indigo-600 relative' : ''
+              }`}
+            >
+              {tier.id === 'pro' && (
+                <div className="absolute top-0 right-0 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">
+                  POPULAR
+                </div>
+              )}
+              
+              <div className="p-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">{tier.name}</h3>
+                <div className="mb-6">
+                  <span className="text-5xl font-bold text-indigo-600">${tier.price}</span>
+                  {tier.price > 0 && <span className="text-gray-600">/{tier.period}</span>}
+                  {tier.price === 0 && <span className="text-gray-600"> forever</span>}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4 max-h-[800px] overflow-y-auto pr-2">
-                  {filteredTemplates.map(template => (
-                    <div
-                      key={template.id}
-                      onClick={() => setSelectedTemplate(template)}
-                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${
-                        selectedTemplate?.id === template.id
-                          ? 'border-purple-600 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-300'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-bold text-lg">{template.name}</h3>
-                        <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                          {template.difficulty}
-                        </span>
-                      </div>
-                      
-                      <div className="text-sm text-gray-600 space-y-1 mb-3">
-                        <div>📁 {template.category}</div>
-                        <div>📄 {template.format}</div>
-                        <div>💰 ${template.avgPrice}</div>
-                        <div>⭐ Popularity: {template.popularity}%</div>
-                        <div>⏱️ Design time: {template.designTime}</div>
-                      </div>
+                <button
+                  className={`w-full py-3 px-6 rounded-lg font-bold text-lg transition-all ${
+                    tier.id === 'free'
+                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                      : tier.id === 'pro'
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                      : 'bg-indigo-100 hover:bg-indigo-200 text-indigo-900'
+                  }`}
+                >
+                  {tier.id === 'free' ? 'Get Started Free' : `Upgrade to ${tier.name}`}
+                </button>
 
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {template.colors.map((color: string, i: number) => (
-                          <div
-                            key={i}
-                            className="w-6 h-6 rounded border border-gray-300"
-                            style={{ backgroundColor: color }}
-                          />
-                        ))}
-                      </div>
-
-                      <div className="text-xs text-gray-500">
-                        {template.keywords.slice(0, 3).join(', ')}
-                      </div>
+                <div className="mt-8 space-y-4">
+                  <div className="font-bold text-gray-900 mb-3">What's included:</div>
+                  
+                  {/* Image Management */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">📸 Images</div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {tier.features.zipUpload ? (
+                        <div>✅ Zip upload & extract</div>
+                      ) : (
+                        <div>❌ Manual upload only</div>
+                      )}
+                      <div>• Up to {tier.features.maxImages} images</div>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Editor */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">✏️ Editor</div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {tier.features.advancedEditing ? (
+                        <div>✅ Advanced editing</div>
+                      ) : (
+                        <div>❌ Basic only (resize, rotate)</div>
+                      )}
+                      {tier.features.textOverlay ? (
+                        <div>✅ Text overlay</div>
+                      ) : (
+                        <div>❌ No text overlay</div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Providers */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">🏭 Providers</div>
+                    <div className="text-sm text-gray-600">
+                      {Array.isArray(tier.features.providers) ? (
+                        <div>• {tier.features.providers.length} provider{tier.features.providers.length > 1 ? 's' : ''}</div>
+                      ) : (
+                        <div>• All providers</div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Automation */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">🤖 Automation</div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {tier.features.autoPublish ? <div>✅ Auto-publish</div> : <div>❌ Manual publish</div>}
+                      {tier.features.autoPrice ? <div>✅ Auto-pricing</div> : <div>❌ Manual pricing</div>}
+                      {tier.features.autoSEO ? <div>✅ Auto-SEO</div> : <div>❌ Manual SEO</div>}
+                    </div>
+                  </div>
+
+                  {/* Analytics */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">📊 Analytics</div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {tier.features.advancedAnalytics ? (
+                        <div>✅ Advanced analytics</div>
+                      ) : (
+                        <div>❌ Basic only</div>
+                      )}
+                      {tier.features.exportData ? (
+                        <div>✅ Export data</div>
+                      ) : (
+                        <div>❌ No export</div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Support */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">💬 Support</div>
+                    <div className="text-sm text-gray-600">
+                      • {tier.features.chatLimit} AI messages/day
+                      {tier.features.prioritySupport && <div>✅ Priority support</div>}
+                    </div>
+                  </div>
+
+                  {/* Limits */}
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 mb-1">📦 Limits</div>
+                    <div className="text-sm text-gray-600">
+                      • {tier.features.maxProducts} products max
+                      • {tier.features.opportunitiesLimit === -1 ? 'Unlimited' : tier.features.opportunitiesLimit} opportunities
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Customization & Generation Panel */}
-            <div className="space-y-6">
-              {selectedTemplate ? (
-                <>
-                  {/* Template Details */}
-                  <div className="bg-white rounded-xl shadow-lg p-6">
-                    <h2 className="text-2xl font-bold mb-4">Selected Template</h2>
-                    <h3 className="text-xl font-bold text-purple-600 mb-3">
-                      {selectedTemplate.name}
-                    </h3>
-                    
-                    <div className="space-y-2 text-sm mb-4">
-                      <div><strong>Category:</strong> {selectedTemplate.category}</div>
-                      <div><strong>Format:</strong> {selectedTemplate.format}</div>
-                      <div><strong>Best for:</strong> {selectedTemplate.bestFor.join(', ')}</div>
-                    </div>
-
-                    <div className="mb-4">
-                      <strong className="text-sm">Includes:</strong>
-                      <ul className="text-sm text-gray-600 mt-1 space-y-1">
-                        {selectedTemplate.elements.slice(0, 5).map((el: string, i: number) => (
-                          <li key={i}>✓ {el}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mb-4">
-                      <strong className="text-sm">Print Options:</strong>
-                      <div className="flex flex-wrap gap-2 mt-1">
-                        {selectedTemplate.printOptions.map((opt: string) => (
-                          <span key={opt} className="text-xs bg-gray-100 px-2 py-1 rounded">
-                            {opt}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Customization */}
-                  <div className="bg-white rounded-xl shadow-lg p-6">
-                    <h2 className="text-xl font-bold mb-4">Customize</h2>
-                    
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Title (optional)</label>
-                        <input
-                          type="text"
-                          value={customization.title}
-                          onChange={e => setCustomization({...customization, title: e.target.value})}
-                          placeholder={selectedTemplate.name}
-                          className="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Primary Color</label>
-                        <input
-                          type="color"
-                          value={customization.colors[0]}
-                          onChange={e => setCustomization({
-                            ...customization, 
-                            colors: [e.target.value, customization.colors[1]]
-                          })}
-                          className="w-full h-10 border-2 border-gray-300 rounded-lg"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Background Color</label>
-                        <input
-                          type="color"
-                          value={customization.colors[1]}
-                          onChange={e => setCustomization({
-                            ...customization, 
-                            colors: [customization.colors[0], e.target.value]
-                          })}
-                          className="w-full h-10 border-2 border-gray-300 rounded-lg"
-                        />
-                      </div>
-
-                      <button
-                        onClick={generatePlanner}
-                        disabled={generating}
-                        className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-all"
-                      >
-                        {generating ? '⏳ Generating...' : '🎨 Generate Planner'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Generated Result */}
-                  {generatedPlanner && (
-                    <div className="bg-white rounded-xl shadow-lg p-6">
-                      <h2 className="text-xl font-bold mb-4">✅ Generated!</h2>
-                      
-                      <div className="mb-4">
-                        <img 
-                          src={generatedPlanner.planner.imageUrl} 
-                          alt="Generated planner" 
-                          className="w-full border-2 border-gray-200 rounded-lg"
-                        />
-                      </div>
-
-                      <div className="text-sm space-y-1 mb-4">
-                        <div><strong>Format:</strong> {generatedPlanner.planner.format}</div>
-                        <div><strong>Size:</strong> {generatedPlanner.planner.dimensions}</div>
-                        <div><strong>DPI:</strong> {generatedPlanner.planner.dpi}</div>
-                        <div><strong>File Size:</strong> {generatedPlanner.planner.fileSize}</div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <a
-                          href={generatedPlanner.downloadFormats.png}
-                          download={`${selectedTemplate.name.replace(/\s+/g, '-')}.png`}
-                          className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-center"
-                        >
-                          📥 Download PNG
-                        </a>
-                        <a
-                          href={generatedPlanner.downloadFormats.svg}
-                          download={`${selectedTemplate.name.replace(/\s+/g, '-')}.svg`}
-                          className="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-center"
-                        >
-                          📥 Download SVG
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="text-center py-8 text-gray-500">
-                    <p className="text-lg mb-2">👈 Select a template</p>
-                    <p className="text-sm">Choose from {templates.length} ready-to-use planner templates</p>
-                  </div>
+              {tier.limitations && tier.limitations.length > 0 && (
+                <div className="bg-gray-50 p-6 border-t border-gray-200">
+                  <div className="text-xs font-bold text-gray-700 mb-2">Limitations:</div>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    {tier.limitations.slice(0, 3).map((limit: string, i: number) => (
+                      <li key={i}>• {limit}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
+          ))}
+        </div>
+
+        {/* Success Story */}
+        <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl shadow-xl p-8 text-white mb-16">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-4">✅ Even Free Users Can Succeed!</h2>
+            <p className="text-xl mb-6">
+              With the free plan, you can still create profitable products - it just requires more manual work.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold">5</div>
+                <div className="text-sm">Products on free plan</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold">$8-13</div>
+                <div className="text-sm">Profit per sale</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold">$40-65</div>
+                <div className="text-sm">Monthly potential</div>
+              </div>
+            </div>
+            <p className="mt-6 text-sm opacity-90">
+              Upgrade when you're ready to scale with automation and advanced features!
+            </p>
           </div>
-        )}
+        </div>
+
+        {/* Feature Comparison Table */}
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Detailed Feature Comparison
+          </h2>
+
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="text-left py-4 px-4 font-bold">Feature</th>
+                  <th className="text-center py-4 px-4 font-bold">Free</th>
+                  <th className="text-center py-4 px-4 font-bold">Starter</th>
+                  <th className="text-center py-4 px-4 font-bold bg-indigo-50">Pro</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: "Image Upload", free: "✅", starter: "✅", pro: "✅" },
+                  { name: "Zip Upload & Extract", free: "❌", starter: "✅", pro: "✅" },
+                  { name: "Max Images", free: "10", starter: "100", pro: "500" },
+                  { name: "Basic Image Editing", free: "✅", starter: "✅", pro: "✅" },
+                  { name: "Advanced Filters", free: "❌", starter: "✅", pro: "✅" },
+                  { name: "Text Overlay", free: "❌", starter: "❌", pro: "✅" },
+                  { name: "Print Providers", free: "1", starter: "2", pro: "4+" },
+                  { name: "Opportunities View", free: "3", starter: "10", pro: "All" },
+                  { name: "Auto-Publish", free: "❌", starter: "✅", pro: "✅" },
+                  { name: "Auto-Pricing", free: "❌", starter: "✅", pro: "✅" },
+                  { name: "Auto-SEO", free: "❌", starter: "❌", pro: "✅" },
+                  { name: "Advanced Analytics", free: "❌", starter: "✅", pro: "✅" },
+                  { name: "Export Data", free: "❌", starter: "❌", pro: "✅" },
+                  { name: "AI Chat Messages", free: "10/day", starter: "50/day", pro: "200/day" },
+                  { name: "Max Products", free: "5", starter: "50", pro: "500" },
+                  { name: "Priority Support", free: "❌", starter: "❌", pro: "✅" }
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-4 font-medium">{row.name}</td>
+                    <td className="py-3 px-4 text-center">{row.free}</td>
+                    <td className="py-3 px-4 text-center">{row.starter}</td>
+                    <td className="py-3 px-4 text-center bg-indigo-50 font-bold">{row.pro}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
