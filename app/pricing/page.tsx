@@ -35,10 +35,10 @@ export default function PricingPage() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-12">
-          <h1 className="text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-6xl font-black text-gray-900 mb-6">
             Choose Your Plan
           </h1>
-          <p className="text-2xl text-gray-600 mb-2">
+          <p className="text-2xl text-gray-600 mb-4">
             Start free, upgrade as you grow
           </p>
           <p className="text-lg text-gray-500">
@@ -62,9 +62,9 @@ export default function PricingPage() {
               )}
               
               <div className="p-8">
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">{tier.name}</h3>
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">{tier.name}</h3>
                 <div className="mb-6">
-                  <span className="text-5xl font-bold text-indigo-600">${tier.price}</span>
+                  <span className="text-5xl font-extrabold text-indigo-600">${tier.price}</span>
                   {tier.price > 0 && <span className="text-gray-600">/{tier.period}</span>}
                   {tier.price === 0 && <span className="text-gray-600"> forever</span>}
                 </div>
@@ -81,12 +81,12 @@ export default function PricingPage() {
                   {tier.id === 'free' ? 'Get Started Free' : `Upgrade to ${tier.name}`}
                 </button>
 
-                <div className="mt-8 space-y-4">
+                <div className="mt-8 space-y-6">
                   <div className="font-bold text-gray-900 mb-3">What's included:</div>
                   
                   {/* Image Management */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">📸 Images</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">📸 Images</div>
                     <div className="text-sm text-gray-600 space-y-1">
                       {tier.features.zipUpload ? (
                         <div>✅ Zip upload & extract</div>
@@ -99,7 +99,7 @@ export default function PricingPage() {
 
                   {/* Editor */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">✏️ Editor</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">✏️ Editor</div>
                     <div className="text-sm text-gray-600 space-y-1">
                       {tier.features.advancedEditing ? (
                         <div>✅ Advanced editing</div>
@@ -116,7 +116,7 @@ export default function PricingPage() {
 
                   {/* Providers */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">🏭 Providers</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">🏭 Providers</div>
                     <div className="text-sm text-gray-600">
                       {Array.isArray(tier.features.providers) ? (
                         <div>• {tier.features.providers.length} provider{tier.features.providers.length > 1 ? 's' : ''}</div>
@@ -128,7 +128,7 @@ export default function PricingPage() {
 
                   {/* Automation */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">🤖 Automation</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">🤖 Automation</div>
                     <div className="text-sm text-gray-600 space-y-1">
                       {tier.features.autoPublish ? <div>✅ Auto-publish</div> : <div>❌ Manual publish</div>}
                       {tier.features.autoPrice ? <div>✅ Auto-pricing</div> : <div>❌ Manual pricing</div>}
@@ -138,7 +138,7 @@ export default function PricingPage() {
 
                   {/* Analytics */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">📊 Analytics</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">📊 Analytics</div>
                     <div className="text-sm text-gray-600 space-y-1">
                       {tier.features.advancedAnalytics ? (
                         <div>✅ Advanced analytics</div>
@@ -155,7 +155,7 @@ export default function PricingPage() {
 
                   {/* Support */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">💬 Support</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">💬 Support</div>
                     <div className="text-sm text-gray-600">
                       • {tier.features.chatLimit} AI messages/day
                       {tier.features.prioritySupport && <div>✅ Priority support</div>}
@@ -164,7 +164,7 @@ export default function PricingPage() {
 
                   {/* Limits */}
                   <div>
-                    <div className="text-sm font-bold text-gray-700 mb-1">📦 Limits</div>
+                    <div className="text-sm font-extrabold text-gray-700 mb-1">📦 Limits</div>
                     <div className="text-sm text-gray-600">
                       • {tier.features.maxProducts} products max
                       • {tier.features.opportunitiesLimit === -1 ? 'Unlimited' : tier.features.opportunitiesLimit} opportunities
@@ -174,8 +174,8 @@ export default function PricingPage() {
               </div>
 
               {tier.limitations && tier.limitations.length > 0 && (
-                <div className="bg-gray-50 p-6 border-t border-gray-200">
-                  <div className="text-xs font-bold text-gray-700 mb-2">Limitations:</div>
+                <div className="bg-gray-50 p-8 border-t border-gray-200">
+                  <div className="text-xs font-bold text-gray-700 mb-4">Limitations:</div>
                   <ul className="text-xs text-gray-600 space-y-1">
                     {tier.limitations.slice(0, 3).map((limit: string, i: number) => (
                       <li key={i}>• {limit}</li>
@@ -190,20 +190,20 @@ export default function PricingPage() {
         {/* Success Story */}
         <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl shadow-xl p-8 text-white mb-16">
           <div className="text-center">
-            <h2 className="text-3xl font-bold mb-4">✅ Even Free Users Can Succeed!</h2>
-            <p className="text-xl mb-6">
+            <h2 className="text-3xl font-bold mb-6">✅ Even Free Users Can Succeed!</h2>
+            <p className="text-xl mb-8">
               With the free plan, you can still create profitable products - it just requires more manual work.
             </p>
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/10 rounded-lg p-4">
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <div className="bg-white/10 rounded-lg p-6">
                 <div className="text-3xl font-bold">5</div>
                 <div className="text-sm">Products on free plan</div>
               </div>
-              <div className="bg-white/10 rounded-lg p-4">
+              <div className="bg-white/10 rounded-lg p-6">
                 <div className="text-3xl font-bold">$8-13</div>
                 <div className="text-sm">Profit per sale</div>
               </div>
-              <div className="bg-white/10 rounded-lg p-4">
+              <div className="bg-white/10 rounded-lg p-6">
                 <div className="text-3xl font-bold">$40-65</div>
                 <div className="text-sm">Monthly potential</div>
               </div>
@@ -250,7 +250,7 @@ export default function PricingPage() {
                   { name: "Priority Support", free: "❌", starter: "❌", pro: "✅" }
                 ].map((row, i) => (
                   <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4 font-medium">{row.name}</td>
+                    <td className="py-3 px-4 font-semibold">{row.name}</td>
                     <td className="py-3 px-4 text-center">{row.free}</td>
                     <td className="py-3 px-4 text-center">{row.starter}</td>
                     <td className="py-3 px-4 text-center bg-indigo-50 font-bold">{row.pro}</td>
