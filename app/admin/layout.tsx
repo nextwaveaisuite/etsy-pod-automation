@@ -1,22 +1,38 @@
-import '../globals.css'
-import Sidebar from './components/Sidebar'
-import Header from './components/Header'
-
-export const metadata = {
-  title: 'Etsy Automate Admin Console',
-  description: 'Admin management for Etsy POD Automation Platform',
-}
+"use client";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="flex h-screen bg-[#0b1120] text-white">
-        <Sidebar />
-        <main className="flex-1 flex flex-col">
-          <Header />
-          <div className="flex-1 overflow-y-auto p-6">{children}</div>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1b2a", color: "white" }}>
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <Header />
+        <main
+          style={{
+            flex: 1,
+            padding: "2rem",
+            background: "#1b263b",
+            borderTopLeftRadius: "12px",
+            color: "#e0e1dd",
+          }}
+        >
+          {children}
         </main>
-      </body>
-    </html>
-  )
+        <footer
+          style={{
+            background: "#0d1b2a",
+            color: "#ffd700",
+            textAlign: "center",
+            padding: "1rem",
+          }}
+        >
+          © {new Date().getFullYear()} Etsy Automate Admin Console
+        </footer>
+      </div>
+    </div>
+  );
 }
