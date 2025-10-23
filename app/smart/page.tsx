@@ -133,13 +133,13 @@ export default function SmartDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-900 mb-2">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
             🧠 Smart POD Builder
           </h1>
           <p className="text-xl text-gray-600">
             Automatically finds winning campaigns and creates enhanced versions
           </p>
-          <div className="mt-4 p-4 bg-blue-100 border-l-4 border-blue-500 rounded">
+          <div className="mt-4 p-6 bg-blue-100 border-l-4 border-blue-500 rounded">
             <p className="text-sm text-blue-900">
               <strong>How it works:</strong> The system finds top-performing images from successful campaigns,
               analyzes what makes them winners, then creates enhanced versions that preserve the winning elements
@@ -148,10 +148,10 @@ export default function SmartDashboard() {
           </div>
         </header>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-8">
           {/* Configuration Panel */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-extrabold mb-8 flex items-center gap-2">
               ⚙️ Configuration
             </h2>
 
@@ -164,7 +164,7 @@ export default function SmartDashboard() {
               <div className="space-y-4">
                 {/* Niche Dropdown */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-semibold mb-4">
                     🎯 Niche {etsyNiches.length > 0 && <span className="text-xs text-green-600">(Auto-loaded from Etsy)</span>}
                   </label>
                   <select
@@ -189,7 +189,7 @@ export default function SmartDashboard() {
 
                 {/* Product Dropdown */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-semibold mb-4">
                     📦 Product {selectedNicheData && <span className="text-xs text-green-600">(Recommended for this niche)</span>}
                   </label>
                   <select
@@ -220,7 +220,7 @@ export default function SmartDashboard() {
 
                 {/* Auto-find winners */}
                 <div className="p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                  <label className="flex items-center gap-3 cursor-pointer">
+                  <label className="flex items-center gap-4 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={autoFindWinners}
@@ -228,7 +228,7 @@ export default function SmartDashboard() {
                       className="w-5 h-5 text-green-600"
                     />
                     <div>
-                      <span className="text-sm font-bold text-green-900">🔍 Auto-find winning campaigns</span>
+                      <span className="text-sm font-extrabold text-green-900">🔍 Auto-find winning campaigns</span>
                       <p className="text-xs text-green-700">Automatically pull images from top-performing campaigns</p>
                     </div>
                   </label>
@@ -237,7 +237,7 @@ export default function SmartDashboard() {
                 {/* Manual image URL */}
                 {!autoFindWinners && (
                   <div>
-                    <label className="block text-sm font-medium mb-2">🖼️ Source Image URL (optional)</label>
+                    <label className="block text-sm font-semibold mb-4">🖼️ Source Image URL (optional)</label>
                     <input
                       type="text"
                       value={sourceImageUrl}
@@ -250,9 +250,9 @@ export default function SmartDashboard() {
 
                 {/* Enhancement level */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">✨ Enhancement Level</label>
+                  <label className="block text-sm font-semibold mb-4">✨ Enhancement Level</label>
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <label className="flex items-center gap-2 p-5 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
                         type="radio"
                         name="enhancement"
@@ -262,11 +262,11 @@ export default function SmartDashboard() {
                         className="w-4 h-4"
                       />
                       <div>
-                        <div className="font-medium">Subtle (Recommended)</div>
+                        <div className="font-semibold">Subtle (Recommended)</div>
                         <div className="text-xs text-gray-600">Preserves 95% of original, minimal improvements</div>
                       </div>
                     </label>
-                    <label className="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <label className="flex items-center gap-2 p-5 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
                         type="radio"
                         name="enhancement"
@@ -276,11 +276,11 @@ export default function SmartDashboard() {
                         className="w-4 h-4"
                       />
                       <div>
-                        <div className="font-medium">Moderate</div>
+                        <div className="font-semibold">Moderate</div>
                         <div className="text-xs text-gray-600">Keeps 80% of original, adds complementary elements</div>
                       </div>
                     </label>
-                    <label className="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <label className="flex items-center gap-2 p-5 border-2 rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
                         type="radio"
                         name="enhancement"
@@ -290,7 +290,7 @@ export default function SmartDashboard() {
                         className="w-4 h-4"
                       />
                       <div>
-                        <div className="font-medium">Significant</div>
+                        <div className="font-semibold">Significant</div>
                         <div className="text-xs text-gray-600">Preserves 60% concept, fresh execution</div>
                       </div>
                     </label>
@@ -321,11 +321,11 @@ export default function SmartDashboard() {
           {/* Results Panel */}
           <div className="space-y-6">
             {/* Activity Log */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-extrabold mb-6 flex items-center gap-2">
                 📊 Activity Log
               </h2>
-              <div className="bg-gray-900 text-green-400 rounded-lg p-4 h-96 overflow-y-auto font-mono text-sm">
+              <div className="bg-gray-900 text-green-400 rounded-lg p-6 h-96 overflow-y-auto font-mono text-sm">
                 {log.length === 0 ? (
                   <div className="text-gray-500">Ready to launch...</div>
                 ) : (
@@ -340,14 +340,14 @@ export default function SmartDashboard() {
 
             {/* Results Display */}
             {results && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold mb-4">🎨 Results</h2>
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <h2 className="text-2xl font-extrabold mb-6">🎨 Results</h2>
                 
                 {results.smartMockup && (
                   <>
                     {results.smartMockup.mockup && (
                       <div className="mb-6">
-                        <h3 className="font-bold mb-2 text-lg">Generated Mockup</h3>
+                        <h3 className="font-bold mb-4 text-lg">Generated Mockup</h3>
                         <img 
                           src={results.smartMockup.mockup} 
                           alt="Product mockup" 
@@ -356,10 +356,10 @@ export default function SmartDashboard() {
                       </div>
                     )}
 
-                    <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-2 gap-6 mb-6">
                       {results.smartMockup.originalWinningImage && (
                         <div>
-                          <h4 className="text-sm font-bold mb-1">Original Winner</h4>
+                          <h4 className="text-sm font-extrabold mb-1">Original Winner</h4>
                           <div className="text-xs text-gray-600 p-2 bg-gray-100 rounded">
                             {results.smartMockup.originalWinningImage.substring(0, 50)}...
                           </div>
@@ -367,7 +367,7 @@ export default function SmartDashboard() {
                       )}
                       {results.smartMockup.enhancedDesign && (
                         <div>
-                          <h4 className="text-sm font-bold mb-1">Enhanced Version</h4>
+                          <h4 className="text-sm font-extrabold mb-1">Enhanced Version</h4>
                           <div className="text-xs text-gray-600 p-2 bg-green-100 rounded">
                             {results.smartMockup.enhancedDesign.substring(0, 50)}...
                           </div>
@@ -376,8 +376,8 @@ export default function SmartDashboard() {
                     </div>
 
                     {results.smartMockup.analysis && (
-                      <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                        <h4 className="font-bold mb-2 text-sm">Image Analysis</h4>
+                      <div className="mb-4 p-5 bg-blue-50 rounded-lg">
+                        <h4 className="font-bold mb-4 text-sm">Image Analysis</h4>
                         <div className="text-xs space-y-1">
                           <div><strong>Strengths:</strong> {results.smartMockup.analysis.strengths?.join(', ')}</div>
                           <div><strong>Applied:</strong> {results.smartMockup.appliedEnhancements?.join(', ')}</div>
@@ -388,8 +388,8 @@ export default function SmartDashboard() {
                 )}
 
                 {results.seo && (
-                  <div className="mb-4 p-3 bg-purple-50 rounded-lg">
-                    <h4 className="font-bold mb-2 text-sm">SEO Content</h4>
+                  <div className="mb-4 p-5 bg-purple-50 rounded-lg">
+                    <h4 className="font-bold mb-4 text-sm">SEO Content</h4>
                     <div className="text-xs space-y-1">
                       <div><strong>Title:</strong> {results.seo.title}</div>
                       <div><strong>Tags:</strong> {results.seo.tags.join(', ')}</div>
@@ -398,8 +398,8 @@ export default function SmartDashboard() {
                 )}
 
                 {results.calc && (
-                  <div className="mb-4 p-3 bg-green-50 rounded-lg">
-                    <h4 className="font-bold mb-2 text-sm">Pricing</h4>
+                  <div className="mb-4 p-5 bg-green-50 rounded-lg">
+                    <h4 className="font-bold mb-4 text-sm">Pricing</h4>
                     <div className="text-xs space-y-1">
                       <div><strong>Profit:</strong> ${results.calc.outputs?.profit || 'N/A'} AUD</div>
                       <div><strong>Breakeven:</strong> ${results.calc.outputs?.breakevenItemPrice || 'N/A'} AUD</div>
@@ -414,3 +414,4 @@ export default function SmartDashboard() {
     </div>
   );
 }
+
