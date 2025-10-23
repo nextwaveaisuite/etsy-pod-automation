@@ -83,7 +83,7 @@ export default function EditorPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-900 mb-2">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
             ✨ Image Editor
           </h1>
           <p className="text-xl text-gray-600">
@@ -91,15 +91,15 @@ export default function EditorPage() {
           </p>
         </header>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Controls Panel */}
-          <div className="lg:col-span-1 space-y-4">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold mb-4">Image Source</h2>
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-extrabold mb-6">Image Source</h2>
               
               <button
                 onClick={selectImageFromLibrary}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg mb-2"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg mb-4"
               >
                 📂 Select from Library
               </button>
@@ -112,7 +112,7 @@ export default function EditorPage() {
             </div>
 
             {/* Resize */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">📐 Resize</h3>
               <div className="space-y-2">
                 <div>
@@ -143,7 +143,7 @@ export default function EditorPage() {
             </div>
 
             {/* Rotate */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">🔄 Rotate</h3>
               <input
                 type="range"
@@ -151,9 +151,9 @@ export default function EditorPage() {
                 max="360"
                 value={rotateAngle}
                 onChange={e => setRotateAngle(parseInt(e.target.value))}
-                className="w-full mb-2"
+                className="w-full mb-4"
               />
-              <div className="text-center mb-2">{rotateAngle}°</div>
+              <div className="text-center mb-4">{rotateAngle}°</div>
               <button
                 onClick={() => addOperation('rotate', { angle: rotateAngle })}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
@@ -163,7 +163,7 @@ export default function EditorPage() {
             </div>
 
             {/* Adjustments */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">🎨 Adjustments</h3>
               <div className="space-y-3">
                 <div>
@@ -226,12 +226,12 @@ export default function EditorPage() {
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">🌈 Filters</h3>
               <select
                 value={filter}
                 onChange={e => setFilter(e.target.value)}
-                className="w-full border-2 rounded px-2 py-2 mb-2"
+                className="w-full border-2 rounded px-2 py-2 mb-4"
               >
                 <option value="none">None</option>
                 <option value="grayscale">Grayscale</option>
@@ -249,7 +249,7 @@ export default function EditorPage() {
             </div>
 
             {/* Text Overlay */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">📝 Text Overlay</h3>
               <div className="space-y-2">
                 <input
@@ -296,7 +296,7 @@ export default function EditorPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
               <h3 className="font-bold mb-3">🎬 Actions</h3>
               <div className="space-y-2">
                 <button
@@ -329,13 +329,13 @@ export default function EditorPage() {
 
           {/* Preview Panel */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold mb-4">Preview</h2>
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-2xl font-extrabold mb-6">Preview</h2>
               
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-6">
                 {/* Original */}
                 <div>
-                  <h3 className="font-bold mb-2">Original</h3>
+                  <h3 className="font-bold mb-4">Original</h3>
                   {selectedImage ? (
                     <img
                       src={`/api/images/serve?path=${encodeURIComponent(selectedImage)}`}
@@ -351,13 +351,13 @@ export default function EditorPage() {
 
                 {/* Edited */}
                 <div>
-                  <h3 className="font-bold mb-2">Edited</h3>
+                  <h3 className="font-bold mb-4">Edited</h3>
                   {editedImage ? (
                     <div>
                       <img
                         src={editedImage}
                         alt="Edited"
-                        className="w-full border-2 border-green-500 rounded-lg mb-2"
+                        className="w-full border-2 border-green-500 rounded-lg mb-4"
                       />
                       <a
                         href={editedImage}
