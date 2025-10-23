@@ -101,7 +101,7 @@ export default function LibraryPage() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-900 mb-2">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
             🖼️ Image Library
           </h1>
           <p className="text-xl text-gray-600">
@@ -110,9 +110,9 @@ export default function LibraryPage() {
         </header>
 
         {/* Upload Section */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Upload Images</h2>
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-extrabold">Upload Images</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode('grid')}
@@ -151,8 +151,8 @@ export default function LibraryPage() {
           </div>
 
           {selectedImages.size > 0 && (
-            <div className="mt-4 p-4 bg-indigo-50 rounded-lg flex items-center justify-between">
-              <span className="font-medium">{selectedImages.size} image(s) selected</span>
+            <div className="mt-4 p-6 bg-indigo-50 rounded-lg flex items-center justify-between">
+              <span className="font-semibold">{selectedImages.size} image(s) selected</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedImages(new Set())}
@@ -172,16 +172,16 @@ export default function LibraryPage() {
         </div>
 
         {/* Library Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow p-4">
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-indigo-600">{images.length}</div>
             <div className="text-sm text-gray-600">Total Images</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-purple-600">{folders.length}</div>
             <div className="text-sm text-gray-600">Folders</div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white rounded-lg shadow p-6">
             <div className="text-3xl font-bold text-pink-600">{selectedImages.size}</div>
             <div className="text-sm text-gray-600">Selected</div>
           </div>
@@ -195,15 +195,15 @@ export default function LibraryPage() {
           </div>
         ) : images.length === 0 ? (
           <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-            <p className="text-xl text-gray-500 mb-4">📂 Your library is empty</p>
+            <p className="text-xl text-gray-500 mb-6">📂 Your library is empty</p>
             <p className="text-gray-400">Upload some images or zip files to get started!</p>
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Your Images ({images.length})</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-extrabold mb-6">Your Images ({images.length})</h2>
             
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {images.map((img, i) => (
                   <div
                     key={i}
@@ -234,7 +234,7 @@ export default function LibraryPage() {
                   <div
                     key={i}
                     onClick={() => toggleImageSelection(img.path)}
-                    className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-all ${
+                    className={`flex items-center gap-6 p-5 rounded-lg cursor-pointer transition-all ${
                       selectedImages.has(img.path) ? 'bg-indigo-100 ring-2 ring-indigo-600' : 'bg-gray-50 hover:bg-gray-100'
                     }`}
                   >
@@ -244,7 +244,7 @@ export default function LibraryPage() {
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1">
-                      <div className="font-medium">{img.name}</div>
+                      <div className="font-semibold">{img.name}</div>
                       <div className="text-xs text-gray-500">{img.folder || '/'}</div>
                     </div>
                     {selectedImages.has(img.path) && (
@@ -262,4 +262,3 @@ export default function LibraryPage() {
     </div>
   );
 }
-
