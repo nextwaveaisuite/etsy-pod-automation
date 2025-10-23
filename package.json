@@ -1,0 +1,28 @@
+{
+  "name": "etsy-pod-builder",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.45.2",
+    "next": "14.2.5",
+    "openai": "^6.3.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sharp": "0.33.3",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "@types/react": "18.2.66",
+    "@types/react-dom": "18.2.22",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.5",
+    "typescript": "5.4.5"
+  }
+}
