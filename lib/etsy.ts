@@ -1,18 +1,12 @@
-export const ETSY_API_BASE = process.env.ETSY_API_BASE || "https://openapi.etsy.com/v3";
-export const ETSY_SHOP_ID = process.env.ETSY_SHOP_ID || "";
-const ETSY_TOKEN = process.env.ETSY_TOKEN || "";
+import { createClient } from '@supabase/supabase-js';
 
-export async function etsyFetch(path: string, init?: RequestInit) {
-  const res = await fetch(`${ETSY_API_BASE}${path}`, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${ETSY_TOKEN}`,
-      ...(init?.headers || {}),
-    },
-    cache: "no-store"
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_KEY!;
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+export async function fetchEtsyData(endpoint: string, token: string) {
+  const res = await fetch(`https://openapi.etsy.com/v3/application/${endpoint}`, {
+    headers: { Authorization: `Bearer ${token}` },
   });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw { status: res.status, data };
-  return data;
+  return await res.json();
 }
