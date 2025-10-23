@@ -2,10 +2,8 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { getCurrentUser, isOwner } from '@/lib/auth'
 
 export default function NavigationNew() {
-  const user = getCurrentUser()
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
   const toggleDropdown = (menu: string) => {
@@ -26,22 +24,22 @@ export default function NavigationNew() {
         active={activeDropdown === 'dashboard'}
         onToggle={() => toggleDropdown('dashboard')}
         items={[
-          { href: '/dashboard', label: 'Basic', icon: '📦' },
-          { href: '/dashboard/auto', label: 'Auto', icon: '⚡' },
-          { href: '/dashboard/smart', label: 'Smart', icon: '🧠' },
-          { href: '/dashboard/library', label: 'Library', icon: '🖼️' },
-          { href: '/dashboard/editor', label: 'Editor', icon: '✏️' },
-          { href: '/dashboard/planners', label: 'Planners', icon: '📋' },
+          { href: '/', label: 'Basic', icon: '📦' },
+          { href: '/auto', label: 'Auto', icon: '⚡' },
+          { href: '/smart', label: 'Smart', icon: '🧠' },
+          { href: '/library', label: 'Library', icon: '🖼️' },
+          { href: '/editor', label: 'Editor', icon: '✏️' },
+          { href: '/planners', label: 'Planners', icon: '📋' },
         ]}
       />
 
       {/* Direct Links */}
-      <NavLink href="/dashboard/opportunities" label="Opportunities" icon="🍎" />
-      <NavLink href="/dashboard/analytics" label="Analytics" icon="📊" />
-      <NavLink href="/dashboard/social" label="Social" icon="🚀" />
-      <NavLink href="/dashboard/traffic" label="Traffic" icon="📈" />
-      <NavLink href="/dashboard/chat" label="AI Chat" icon="🤖" />
-      <NavLink href="/dashboard/pricing" label="Pricing" icon="💎" />
+      <NavLink href="/opportunities" label="Opportunities" icon="🍎" />
+      <NavLink href="/analytics" label="Analytics" icon="📊" />
+      <NavLink href="/social" label="Social" icon="🚀" />
+      <NavLink href="/traffic" label="Traffic" icon="📈" />
+      <NavLink href="/chat" label="AI Chat" icon="🤖" />
+      <NavLink href="/pricing" label="Pricing" icon="💎" />
     </nav>
   )
 }
