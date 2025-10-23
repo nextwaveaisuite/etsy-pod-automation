@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-5xl font-bold text-gray-900 mb-2">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
             📊 Analytics Dashboard
           </h1>
           <p className="text-xl text-gray-600">
@@ -54,39 +54,39 @@ export default function AnalyticsPage() {
         </header>
 
         {/* Overview Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-8">
             <div className="text-sm text-gray-600 mb-1">Total Sales</div>
             <div className="text-3xl font-bold text-indigo-600">{overview.totalSales}</div>
             <div className="text-xs text-green-600 mt-1">↑ +12% vs last period</div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-8">
             <div className="text-sm text-gray-600 mb-1">Revenue</div>
             <div className="text-3xl font-bold text-blue-600">${overview.totalRevenue.toFixed(2)}</div>
             <div className="text-xs text-green-600 mt-1">↑ +18% vs last period</div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-8">
             <div className="text-sm text-gray-600 mb-1">Profit</div>
             <div className="text-3xl font-bold text-green-600">${overview.totalProfit.toFixed(2)}</div>
             <div className="text-xs text-green-600 mt-1">↑ +15% vs last period</div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-8">
             <div className="text-sm text-gray-600 mb-1">Profit Margin</div>
             <div className="text-3xl font-bold text-purple-600">{overview.profitMargin}%</div>
             <div className="text-xs text-gray-500 mt-1">Healthy margin</div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           {/* Sales Chart */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">📈 Daily Sales</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-extrabold mb-6">📈 Daily Sales</h2>
             <div className="space-y-2">
               {analytics.salesByDay.map((day: any, i: number) => (
-                <div key={i} className="flex items-center gap-3">
+                <div key={i} className="flex items-center gap-4">
                   <div className="text-xs text-gray-500 w-20">{day.date.slice(5)}</div>
                   <div className="flex-1 bg-gray-100 rounded-full h-6 relative">
                     <div
@@ -96,19 +96,19 @@ export default function AnalyticsPage() {
                       {day.sales}
                     </div>
                   </div>
-                  <div className="text-xs font-medium w-16">${day.revenue}</div>
+                  <div className="text-xs font-semibold w-16">${day.revenue}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Top Products */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">🏆 Top Products</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-extrabold mb-6">🏆 Top Products</h2>
             <div className="space-y-3">
               {analytics.topProducts.slice(0, 6).map((product: any, i: number) => (
-                <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-300">#{i + 1}</div>
+                <div key={i} className="flex items-center gap-4 p-5 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-extrabold text-gray-300">#{i + 1}</div>
                   <div className="flex-1">
                     <div className="font-bold">{product.name}</div>
                     <div className="text-xs text-gray-600">
@@ -124,15 +124,15 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-6">
+        <div className="grid lg:grid-cols-3 gap-8 mb-8">
           {/* Sales by Product Type */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold mb-4">📦 By Product Type</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-xl font-bold mb-6">📦 By Product Type</h2>
             <div className="space-y-3">
               {analytics.salesByProduct.map((item: any, i: number) => (
                 <div key={i}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="font-medium">{item.product}</span>
+                    <span className="font-semibold">{item.product}</span>
                     <span className="text-gray-600">{item.count}</span>
                   </div>
                   <div className="bg-gray-200 rounded-full h-2">
@@ -147,28 +147,28 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Print Status */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold mb-4">🖨️ Print Status</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-xl font-bold mb-6">🖨️ Print Status</h2>
             <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-yellow-50 rounded">
-                <span className="font-medium">⏳ Pending</span>
+              <div className="flex justify-between items-center p-5 bg-yellow-50 rounded">
+                <span className="font-semibold">⏳ Pending</span>
                 <span className="text-xl font-bold text-yellow-600">{analytics.printStatus.pending}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
-                <span className="font-medium">🖨️ Printing</span>
+              <div className="flex justify-between items-center p-5 bg-blue-50 rounded">
+                <span className="font-semibold">🖨️ Printing</span>
                 <span className="text-xl font-bold text-blue-600">{analytics.printStatus.printing}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-purple-50 rounded">
-                <span className="font-medium">📦 Shipped</span>
+              <div className="flex justify-between items-center p-5 bg-purple-50 rounded">
+                <span className="font-semibold">📦 Shipped</span>
                 <span className="text-xl font-bold text-purple-600">{analytics.printStatus.shipped}</span>
               </div>
-              <div className="flex justify-between items-center p-3 bg-green-50 rounded">
-                <span className="font-medium">✅ Delivered</span>
+              <div className="flex justify-between items-center p-5 bg-green-50 rounded">
+                <span className="font-semibold">✅ Delivered</span>
                 <span className="text-xl font-bold text-green-600">{analytics.printStatus.delivered}</span>
               </div>
               {analytics.printStatus.issues > 0 && (
-                <div className="flex justify-between items-center p-3 bg-red-50 rounded">
-                  <span className="font-medium">⚠️ Issues</span>
+                <div className="flex justify-between items-center p-5 bg-red-50 rounded">
+                  <span className="font-semibold">⚠️ Issues</span>
                   <span className="text-xl font-bold text-red-600">{analytics.printStatus.issues}</span>
                 </div>
               )}
@@ -176,13 +176,13 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Traffic Sources */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold mb-4">🚦 Traffic Sources</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-xl font-bold mb-6">🚦 Traffic Sources</h2>
             <div className="space-y-3">
               {analytics.trafficSources.map((source: any, i: number) => (
                 <div key={i} className="p-3 bg-gray-50 rounded">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-medium text-sm">{source.source}</span>
+                    <span className="font-semibold text-sm">{source.source}</span>
                     <span className="text-xs text-green-600 font-bold">{source.conversionRate}%</span>
                   </div>
                   <div className="text-xs text-gray-600">
@@ -195,8 +195,8 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4">📋 Recent Orders</h2>
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <h2 className="text-2xl font-extrabold mb-6">📋 Recent Orders</h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -235,11 +235,11 @@ export default function AnalyticsPage() {
 
         {/* Refunds */}
         {analytics.refunds.length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">💸 Recent Refunds</h2>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-extrabold mb-6">💸 Recent Refunds</h2>
             <div className="space-y-2">
               {analytics.refunds.map((refund: any, i: number) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-red-50 rounded">
+                <div key={i} className="flex items-center justify-between p-5 bg-red-50 rounded">
                   <div>
                     <div className="font-bold">{refund.id}</div>
                     <div className="text-sm text-gray-600">{refund.product} • {refund.date}</div>
