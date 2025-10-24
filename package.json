@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -20,7 +20,8 @@
     "axios": "^1.7.2",
     "uuid": "^9.0.1",
     "formidable": "^3.5.1",
-    "path-browserify": "^1.0.1"
+    "path-browserify": "^1.0.1",
+    "prettier": "^3.2.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
@@ -30,30 +31,7 @@
     "eslint-config-next": "14.2.5"
   },
   "eslintConfig": {
-    "extends": "next/core-web-vitals"
-  },
-  "tsconfig": {
-    "compilerOptions": {
-      "target": "ESNext",
-      "lib": ["DOM", "DOM.Iterable", "ESNext"],
-      "allowJs": true,
-      "skipLibCheck": true,
-      "strict": false,
-      "forceConsistentCasingInFileNames": true,
-      "noEmit": true,
-      "esModuleInterop": true,
-      "module": "ESNext",
-      "moduleResolution": "Node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "jsx": "preserve",
-      "incremental": true,
-      "paths": {
-        "@/*": ["./*"]
-      }
-    },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    "exclude": ["node_modules"]
+    "extends": ["next/core-web-vitals"]
   },
   "engines": {
     "node": ">=18.0.0"
