@@ -9,27 +9,52 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
+    "@supabase/supabase-js": "^2.42.0",
     "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "sharp": "^0.33.2",
-    "eslint": "^8.57.1",
-    "typescript": "^5.4.5",
-    "lucide-react": "^0.321.0",
-    "framer-motion": "^11.1.7",
-    "tailwindcss": "^3.4.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.41",
-    "@headlessui/react": "^1.7.19",
-    "@heroicons/react": "^2.1.5"
+    "typescript": "^5.5.4",
+    "openai": "^4.57.1",
+    "axios": "^1.7.2",
+    "uuid": "^9.0.1",
+    "formidable": "^3.5.1",
+    "path-browserify": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.2",
-    "@types/react-dom": "^18.3.2"
+    "@types/react-dom": "^18.3.2",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.5"
   },
   "eslintConfig": {
     "extends": "next/core-web-vitals"
+  },
+  "tsconfig": {
+    "compilerOptions": {
+      "target": "ESNext",
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": false,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": true,
+      "esModuleInterop": true,
+      "module": "ESNext",
+      "moduleResolution": "Node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "preserve",
+      "incremental": true,
+      "paths": {
+        "@/*": ["./*"]
+      }
+    },
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "exclude": ["node_modules"]
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
